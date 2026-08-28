@@ -8,6 +8,8 @@ const challengeFill = document.querySelector('#challengeFill');
 const challengeAmount = document.querySelector('#challengeAmount');
 const challengeStatus = document.querySelector('#challengeStatus');
 const toast = document.querySelector('#toast');
+const currentDate = document.querySelector('#currentDate');
+const selectedDate = new Date(2024, 7, 20);
 
 const STORAGE_KEY = 'reclaim-progress-v1';
 const defaultProgress = { reclaimed: 42, coins: 184, challengeMinutes: 12 };
@@ -55,6 +57,18 @@ function showToast(message) {
   toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
 }
 
+function renderDate() {
+  currentDate.textContent = new Intl.DateTimeFormat('en-US', {
+    weekday: 'long', month: 'long', day: 'numeric', year: 'numeric'
+  }).format(selectedDate);
+}
+
+function shiftDate(days) {
+  selectedDate.setDate(selectedDate.getDate() + days);
+  renderDate();
+  showToast(`Showing ${currentDate.textContent}.`);
+}
+
 reclaimButton.addEventListener('click', () => {
   reclaimed = Math.min(reclaimed + 5, 60);
   coins += 5;
@@ -66,20 +80,36 @@ reclaimButton.addEventListener('click', () => {
 
 challengeButton.addEventListener('click', () => {
   challengeMinutes = Math.min(challengeMinutes + 5, 20);
+  if (challengeMinutes === 20) coins += 20;
   saveProgress();
   renderProgress();
   if (challengeMinutes === 20) {
-    challengeStatus.textContent = 'COMPLETE';
-    challengeStatus.style.color = '#668b32';
-    challengeButton.innerHTML = 'Challenge complete <span>✓</span>';
-    challengeButton.disabled = true;
     showToast('Challenge complete. +20 TimeCoins added.');
   } else {
     showToast('Challenge progress saved.');
   }
 });
 
+document.querySelector('#previousDay').addEventListener('click', () => shiftDate(-1));
+document.querySelector('#nextDay').addEventListener('click', () => shiftDate(1));
+document.querySelector('#notificationsButton').addEventListener('click', () => showToast('You are all caught up.'));
+document.querySelector('#upgradeButton').addEventListener('click', () => showToast('Reclaim Pro will be available soon.'));
+document.querySelector('#detailsButton').addEventListener('click', () => showToast('Detailed activity history is coming soon.'));
+document.querySelector('#experimentButton').addEventListener('click', (event) => {
+  event.currentTarget.textContent = 'Experiment started';
+  event.currentTarget.disabled = true;
+  showToast('Experiment started. We will check in tonight.');
+});
+
+document.querySelectorAll('.tab-item').forEach((tab) => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab-item').forEach((item) => item.classList.remove('active'));
+    tab.classList.add('active');
+  });
+});
+
 renderProgress();
+renderDate();
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js'));

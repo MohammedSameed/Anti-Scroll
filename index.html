@@ -32,7 +32,7 @@
           <span class="upgrade-spark">✦</span>
           <strong>Make time work<br />harder for you.</strong>
           <p>Unlock your full history and personal experiments.</p>
-          <button class="text-button">Explore Reclaim Pro <span>↗</span></button>
+          <button class="text-button" id="upgradeButton">Explore Reclaim Pro <span>↗</span></button>
         </div>
         <a class="nav-item muted" href="#settings"><span class="nav-icon">⚙</span>Settings</a>
         <div class="profile"><div class="avatar">AS</div><div><strong>Sameed</strong><small>Free plan</small></div><span class="more">•••</span></div>
@@ -42,8 +42,8 @@
     <main class="main-content" id="top">
       <header class="topbar">
         <div class="mobile-brand"><span class="brand-mark"><span></span><span></span><span></span></span>reclaim<span class="brand-dot">.</span></div>
-        <div class="date-control"><button aria-label="Previous day">‹</button><span>Tuesday, August 20, 2024</span><button aria-label="Next day">›</button></div>
-        <button class="icon-button" aria-label="Notifications"><span class="notification-dot"></span>♧</button>
+        <div class="date-control"><button id="previousDay" aria-label="Previous day">‹</button><span id="currentDate">Tuesday, August 20, 2024</span><button id="nextDay" aria-label="Next day">›</button></div>
+        <button class="icon-button" id="notificationsButton" aria-label="Notifications"><span class="notification-dot"></span>♧</button>
       </header>
 
       <section class="welcome-row">
@@ -69,7 +69,7 @@
 
       <section class="content-grid">
         <article class="panel usage-panel">
-          <div class="panel-heading"><div><p class="eyebrow">HOW YOU SPENT TODAY</p><h2>Your 24 hours</h2></div><button class="link-button">View details <span>↗</span></button></div>
+          <div class="panel-heading"><div><p class="eyebrow">HOW YOU SPENT TODAY</p><h2>Your 24 hours</h2></div><button class="link-button" id="detailsButton">View details <span>↗</span></button></div>
           <div class="usage-content"><div class="donut-wrap"><div class="donut"><div class="donut-center"><strong>16<span>h</span></strong><small>awake time</small></div></div></div><div class="legend"><div><span class="legend-color work"></span><span>Work & study</span><strong>7h 24m</strong></div><div><span class="legend-color rest"></span><span>Sleep</span><strong>7h 42m</strong></div><div><span class="legend-color joy"></span><span>Good time</span><strong>2h 12m</strong></div><div><span class="legend-color scroll"></span><span>Scrolling</span><strong>1h 42m</strong></div></div></div>
           <div class="timeline"><span>12am</span><i></i><span>6am</span><i></i><span>12pm</span><i></i><span>6pm</span><i></i><span>12am</span></div>
         </article>
@@ -77,7 +77,7 @@
         <article class="panel insight-panel" id="insight">
           <div class="panel-heading"><div><p class="eyebrow">ONE THING TO NOTICE</p><h2>Small observation</h2></div><span class="insight-icon">✦</span></div>
           <div class="insight-body"><p>Your longest scrolling window was <strong>between 10:30–11:15pm</strong> last night.</p><div class="insight-suggestion"><span>◷</span><div><strong>Try a softer landing</strong><small>Put your phone on charge 15 min earlier tonight.</small></div><button aria-label="Try experiment">→</button></div></div>
-          <button class="experiment-button">Start this experiment</button>
+          <button class="experiment-button" id="experimentButton">Start this experiment</button>
         </article>
 
         <article class="panel challenge-panel" id="challenge">
