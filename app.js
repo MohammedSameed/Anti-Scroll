@@ -9,13 +9,20 @@ const challengeAmount = document.querySelector('#challengeAmount');
 const challengeStatus = document.querySelector('#challengeStatus');
 const toast = document.querySelector('#toast');
 const currentDate = document.querySelector('#currentDate');
-const selectedDate = new Date(2024, 7, 20);
+const DATE_STORAGE_KEY = 'reclaim-selected-date-v1';
+const selectedDate = loadSelectedDate();
 
 const STORAGE_KEY = 'reclaim-progress-v1';
 const defaultProgress = { reclaimed: 42, coins: 184, challengeMinutes: 12 };
 let progress = loadProgress();
 let { reclaimed, coins, challengeMinutes } = progress;
 let toastTimer;
+
+function loadSelectedDate() {
+  const savedDate = localStorage.getItem(DATE_STORAGE_KEY);
+  const date = savedDate ? new Date(`${savedDate}T12:00:00`) : new Date(2024, 7, 20, 12);
+  return Number.isNaN(date.getTime()) ? new Date(2024, 7, 20, 12) : date;
+}
 
 function loadProgress() {
   try {
@@ -65,6 +72,7 @@ function renderDate() {
 
 function shiftDate(days) {
   selectedDate.setDate(selectedDate.getDate() + days);
+  localStorage.setItem(DATE_STORAGE_KEY, selectedDate.toISOString().slice(0, 10));
   renderDate();
   showToast(`Showing ${currentDate.textContent}.`);
 }
@@ -99,6 +107,10 @@ document.querySelector('#experimentButton').addEventListener('click', (event) =>
   event.currentTarget.textContent = 'Experiment started';
   event.currentTarget.disabled = true;
   showToast('Experiment started. We will check in tonight.');
+});
+document.querySelector('#walletOptionsButton').addEventListener('click', () => showToast('Wallet history will be available with your account.'));
+document.querySelector('#suggestionButton').addEventListener('click', () => {
+  document.querySelector('#experimentButton').click();
 });
 
 document.querySelectorAll('.tab-item').forEach((tab) => {

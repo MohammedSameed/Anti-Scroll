@@ -53,7 +53,7 @@
 
       <section class="hero-grid">
         <article class="wallet-card" id="wallet">
-          <div class="card-top"><div><p class="eyebrow light">YOUR TIME WALLET</p><h2>Today’s balance</h2></div><button class="round-action" aria-label="More wallet options">•••</button></div>
+          <div class="card-top"><div><p class="eyebrow light">YOUR TIME WALLET</p><h2>Today’s balance</h2></div><button class="round-action" id="walletOptionsButton" aria-label="More wallet options">•••</button></div>
           <div class="balance-line"><span class="balance-number" id="coinBalance">184</span><span class="coin-symbol">◈</span><span class="balance-label">TimeCoins</span></div>
           <div class="wallet-stats"><div><span>Reclaimed today</span><strong id="reclaimedTime">42 min</strong></div><div><span>vs. last week</span><strong class="positive">+18 min</strong></div></div>
           <div class="wallet-progress"><div class="progress-label"><span>Daily reclaim goal</span><span id="goalLabel">42 / 60 min</span></div><div class="progress-track"><div class="progress-fill" id="goalFill"></div></div></div>
@@ -76,7 +76,7 @@
 
         <article class="panel insight-panel" id="insight">
           <div class="panel-heading"><div><p class="eyebrow">ONE THING TO NOTICE</p><h2>Small observation</h2></div><span class="insight-icon">✦</span></div>
-          <div class="insight-body"><p>Your longest scrolling window was <strong>between 10:30–11:15pm</strong> last night.</p><div class="insight-suggestion"><span>◷</span><div><strong>Try a softer landing</strong><small>Put your phone on charge 15 min earlier tonight.</small></div><button aria-label="Try experiment">→</button></div></div>
+          <div class="insight-body"><p>Your longest scrolling window was <strong>between 10:30–11:15pm</strong> last night.</p><div class="insight-suggestion"><span>◷</span><div><strong>Try a softer landing</strong><small>Put your phone on charge 15 min earlier tonight.</small></div><button id="suggestionButton" aria-label="Try experiment">→</button></div></div>
           <button class="experiment-button" id="experimentButton">Start this experiment</button>
         </article>
 
