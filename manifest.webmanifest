@@ -1,0 +1,10 @@
+{
+  "name": "Reclaim | Anti-Scroll",
+  "short_name": "Reclaim",
+  "description": "Turn recovered screen time into time well spent.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f5f6f1",
+  "theme_color": "#f5f6f1",
+  "orientation": "portrait"
+}
