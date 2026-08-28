@@ -1,0 +1,6 @@
+node_modules/
+.env
+reclaim.sqlite
+reclaim.sqlite-shm
+reclaim.sqlite-wal
+.DS_Store

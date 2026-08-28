@@ -15,6 +15,24 @@
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
+  <section class="auth-gate" id="authGate" hidden>
+    <div class="auth-brand"><span class="brand-mark"><span></span><span></span><span></span></span>reclaim<span class="brand-dot">.</span></div>
+    <div class="auth-panel">
+      <p class="eyebrow">YOUR PRIVATE SPACE</p>
+      <h1 id="authTitle">Welcome back</h1>
+      <p id="authDescription">Sign in to sync your reclaimed time across devices.</p>
+      <form id="authForm">
+        <label for="authEmail">Email</label>
+        <input id="authEmail" name="email" type="email" autocomplete="email" required maxlength="254" />
+        <label for="authPassword">Password</label>
+        <input id="authPassword" name="password" type="password" autocomplete="current-password" minlength="12" maxlength="128" required />
+        <button class="reclaim-button" id="authSubmit" type="submit">Sign in</button>
+      </form>
+      <p class="auth-error" id="authError" role="alert"></p>
+      <button class="auth-switch" id="authSwitch" type="button">Create an account</button>
+      <button class="demo-button" id="demoButton" type="button">Continue in demo mode</button>
+    </div>
+  </section>
   <div class="app-shell">
     <aside class="sidebar">
       <a class="brand" href="#top" aria-label="Reclaim home">

@@ -8,6 +8,16 @@ const challengeFill = document.querySelector('#challengeFill');
 const challengeAmount = document.querySelector('#challengeAmount');
 const challengeStatus = document.querySelector('#challengeStatus');
 const toast = document.querySelector('#toast');
+const appShell = document.querySelector('.app-shell');
+const authGate = document.querySelector('#authGate');
+const authForm = document.querySelector('#authForm');
+const authTitle = document.querySelector('#authTitle');
+const authDescription = document.querySelector('#authDescription');
+const authSubmit = document.querySelector('#authSubmit');
+const authSwitch = document.querySelector('#authSwitch');
+const authError = document.querySelector('#authError');
+const demoButton = document.querySelector('#demoButton');
+const authPassword = document.querySelector('#authPassword');
 const currentDate = document.querySelector('#currentDate');
 const DATE_STORAGE_KEY = 'reclaim-selected-date-v1';
 const selectedDate = loadSelectedDate();
@@ -17,6 +27,7 @@ const defaultProgress = { reclaimed: 42, coins: 184, challengeMinutes: 12 };
 let progress = loadProgress();
 let { reclaimed, coins, challengeMinutes } = progress;
 let toastTimer;
+let authMode = 'login';
 
 function loadSelectedDate() {
   const savedDate = localStorage.getItem(DATE_STORAGE_KEY);
@@ -62,6 +73,73 @@ function showToast(message) {
   toast.classList.add('show');
   clearTimeout(toastTimer);
   toastTimer = setTimeout(() => toast.classList.remove('show'), 2600);
+}
+
+function showDashboard() {
+  authGate.hidden = true;
+  appShell.hidden = false;
+}
+
+function showAuth() {
+  authGate.hidden = false;
+  appShell.hidden = true;
+}
+
+function setAuthMode(mode) {
+  authMode = mode;
+  const isLogin = mode === 'login';
+  authTitle.textContent = isLogin ? 'Welcome back' : 'Create your account';
+  authDescription.textContent = isLogin ? 'Sign in to sync your reclaimed time across devices.' : 'Create a private space for your reclaimed time.';
+  authSubmit.textContent = isLogin ? 'Sign in' : 'Create account';
+  authSwitch.textContent = isLogin ? 'Create an account' : 'I already have an account';
+  authPassword.autocomplete = isLogin ? 'current-password' : 'new-password';
+  authError.textContent = '';
+}
+
+async function requestAuth(endpoint, credentials) {
+  const response = await fetch(endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'same-origin',
+    body: JSON.stringify(credentials)
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || 'Unable to authenticate right now.');
+  return data;
+}
+
+authForm.addEventListener('submit', async (event) => {
+  event.preventDefault();
+  authError.textContent = '';
+  authSubmit.disabled = true;
+  try {
+    const formData = new FormData(authForm);
+    await requestAuth(`/api/auth/${authMode === 'login' ? 'login' : 'register'}`, {
+      email: formData.get('email'), password: formData.get('password')
+    });
+    showDashboard();
+    showToast('Your account is ready.');
+  } catch (error) {
+    authError.textContent = error.message;
+  } finally {
+    authSubmit.disabled = false;
+  }
+});
+
+authSwitch.addEventListener('click', () => setAuthMode(authMode === 'login' ? 'register' : 'login'));
+demoButton.addEventListener('click', () => {
+  showDashboard();
+  showToast('Demo mode enabled. Progress stays on this device.');
+});
+
+async function checkSession() {
+  try {
+    const response = await fetch('/api/auth/me', { credentials: 'same-origin' });
+    if (response.ok) return showDashboard();
+    if (response.status === 401) return showAuth();
+  } catch {
+    showDashboard();
+  }
 }
 
 function renderDate() {
@@ -122,6 +200,8 @@ document.querySelectorAll('.tab-item').forEach((tab) => {
 
 renderProgress();
 renderDate();
+setAuthMode('login');
+checkSession();
 
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => navigator.serviceWorker.register('./service-worker.js'));
